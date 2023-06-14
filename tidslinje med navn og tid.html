@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tidslinjegenerator</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #timeline-container {
+      margin-top: 2cm;
+      width: 100%;
+      position: relative;
+    }
+
+    #timeline {
+      width: calc(100% - 40px); /* Justert verdien for å inkludere luft før og etter tidslinjen */
+      height: 2px;
+      background-color: #ccc;
+      position: absolute;
+      top: 80px; /* Justert verdi for å flytte tidslinjen */
+      transform: translateY(-50%);
+      margin: 0 20px; /* Legg til luft før og etter tidslinjen */
+    }
+
+    #timeline::before,
+    #timeline::after {
+      content: "";
+      position: absolute;
+      height: 10px;
+      width: 10px;
+      border-radius: 50%;
+      background-color: #ccc;
+    }
+
+    #timeline::before {
+      left: -10px; /* Justert verdi for plassering av prikk */
+      top: -4px;
+    }
+
+    #timeline::after {
+      right: -10px; /* Justert verdi for plassering av prikk */
+      top: -4px;
+    }
+
+    .event {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #f00;
+      top: -4px;
+      transform: translateX(-50%);
+    }
+
+    .event-label {
+      position: absolute;
+      top: 20px;
+      text-align: center;
+      width: 100px;
+      transform: translateX(-50%);
+    }
+  </style>
+</head>
+<body>
+  <div id="timeline-container">
+    <div id="timeline"></div>
+  </div>
+  <input type="text" id="eventName" placeholder="Hendelse">
+  <input type="number" id="eventPosition" placeholder="År (0-100)">
+  <button onclick="addEvent()">Legg til hendelse</button>
+
+  <script>
+    var timeline = document.getElementById('timeline');
+    var eventCounter = 0;
+
+    function addEvent() {
+      var eventName = document.getElementById('eventName').value;
+      var eventPosition = parseInt(document.getElementById('eventPosition').value);
+
+      if (eventName === '' || isNaN(eventPosition) || eventPosition < 0 || eventPosition > 100) {
+        alert('Vennligst fyll ut gyldige verdier');
+        return;
+      }
+
+      var event = document.createElement('div');
+      event.className = 'event';
+      event.style.left = eventPosition + '%';
+      timeline.appendChild(event);
+
+      var eventLabel = document.createElement('div');
+      eventLabel.className = 'event-label';
+      eventLabel.textContent = eventName;
+      event.appendChild(eventLabel);
+
+      eventCounter++;
+
+      document.getElementById('eventName').value = '';
+      document.getElementById('eventPosition').value = '';
+    }
+  </script>
+</body>
+</html>
