@@ -8,11 +8,6 @@ import json
 import smtplib
 from email.message import EmailMessage
 from typing import Optional
-from email.message import EmailMessage
-import smtplib
-import httpx
-import asyncio
-
 import httpx
 
 logging.basicConfig(
@@ -1343,20 +1338,91 @@ async def v1_sensorunit_ports_output_status(serialnumber: Optional[str] = None):
 async def v1_customers_add(
     customernumber: Optional[str] = None,
     customer_name: Optional[str] = "",
+    customer_vatnumber: Optional[str] = "",
+    customer_phone: Optional[str] = "",
+    customer_fax: Optional[str] = "",
+    customer_email: Optional[str] = "",
+    customer_web: Optional[str] = "",
+    customer_visitaddr1: Optional[str] = "",
+    customer_visitaddr2: Optional[str] = "",
+    customer_visitpostcode: Optional[str] = "",
+    customer_visitcity: Optional[str] = "",
+    customer_visitcountry: Optional[str] = "0",
+    customer_invoiceaddr1: Optional[str] = "",
+    customer_invoiceaddr2: Optional[str] = "",
+    customer_invoicepostcode: Optional[str] = "",
+    customer_invoicecity: Optional[str] = "",
+    customer_invoicecountry: Optional[str] = "0",
+    customer_deliveraddr1: Optional[str] = "",
+    customer_deliveraddr2: Optional[str] = "",
+    customer_deliverpostcode: Optional[str] = "",
+    customer_delivercity: Optional[str] = "",
+    customer_delivercountry: Optional[str] = "0",
+    customer_maincontact: Optional[str] = "",
+    customer_deliveraddr_same_as_invoice: Optional[str] = "false",
+    customer_invoiceaddr_same_as_visit: Optional[str] = "false",
     customertype_id_ref: Optional[int] = 1,
+    customer_site_title: Optional[str] = "",
+    dealer_id: Optional[int] = 0,
 ):
-    """Insert a new customer."""
+    """Insert a new customer replicating the Perl behaviour."""
     if not customernumber:
         raise HTTPException(status_code=400, detail="Missing parameter: needs customernumber")
+
     row = await db.fetchone(
         "SELECT customernumber FROM customer WHERE customernumber=?",
         (customernumber,),
     )
     if row:
-        raise HTTPException(status_code=302, detail=f"Record exists for customernumber:{customernumber}")
+        raise HTTPException(
+            status_code=302,
+            detail=f"Record exists for customernumber:{customernumber}",
+        )
+
     await db.execute(
-        "INSERT INTO customer (customernumber, customer_name, customertype_id_ref) VALUES (?, ?, ?)",
-        (customernumber, customer_name or "", customertype_id_ref),
+        """
+        INSERT INTO customer (
+            customernumber,customer_name,customer_vatnumber,customer_phone,
+            customer_fax,customer_email,customer_web,customer_visitaddr1,
+            customer_visitaddr2,customer_visitpostcode,customer_visitcity,
+            customer_visitcountry,customer_invoiceaddr1,customer_invoiceaddr2,
+            customer_invoicepostcode,customer_invoicecity,customer_invoicecountry,
+            customer_deliveraddr1,customer_deliveraddr2,customer_deliverpostcode,
+            customer_delivercity,customer_delivercountry,customer_maincontact,
+            customer_deliveraddr_same_as_invoice,customer_invoiceaddr_same_as_visit,
+            customertype_id_ref,customer_site_title,dealer_id
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        """,
+        (
+            customernumber,
+            customer_name or "",
+            customer_vatnumber or "",
+            customer_phone or "",
+            customer_fax or "",
+            customer_email or "",
+            customer_web or "",
+            customer_visitaddr1 or "",
+            customer_visitaddr2 or "",
+            customer_visitpostcode or "",
+            customer_visitcity or "",
+            customer_visitcountry or "0",
+            customer_invoiceaddr1 or "",
+            customer_invoiceaddr2 or "",
+            customer_invoicepostcode or "",
+            customer_invoicecity or "",
+            customer_invoicecountry or "0",
+            customer_deliveraddr1 or "",
+            customer_deliveraddr2 or "",
+            customer_deliverpostcode or "",
+            customer_delivercity or "",
+            customer_delivercountry or "0",
+            customer_maincontact or "",
+            customer_deliveraddr_same_as_invoice or "false",
+            customer_invoiceaddr_same_as_visit or "false",
+            customertype_id_ref or 1,
+            customer_site_title or "",
+            dealer_id or 0,
+        ),
     )
     return {"result": "OK"}
 
@@ -1371,8 +1437,14 @@ async def v1_customers_list(
 ):
     """List customers with optional filters."""
     query = (
-        "SELECT customer.customernumber, customer.customer_name, customer.customer_id,"
-        " customertype.customertype, customertype.description "
+        "SELECT customernumber,customer_name,customer_vatnumber,customer_phone,"
+        "customer_fax,customer_email,customer_web,customer_visitaddr1,customer_visitaddr2,"
+        "customer_visitpostcode,customer_visitcity,customer_visitcountry,customer_invoiceaddr1,"
+        "customer_invoiceaddr2,customer_invoicepostcode,customer_invoicecity,customer_invoicecountry,"
+        "customer_deliveraddr1,customer_deliveraddr2,customer_deliverpostcode,customer_delivercity,"
+        "customer_delivercountry,customer_maincontact,customer_deliveraddr_same_as_invoice,"
+        "customer_invoiceaddr_same_as_visit,customertype_id_ref,customer_site_title,customer_id,"
+        "customertype.customertype,customertype.description "
         "FROM customer INNER JOIN customertype ON customer.customertype_id_ref = customertype.customertype_id"
     )
     where_clauses: list[str] = []
@@ -1402,21 +1474,83 @@ async def v1_customers_update(
     customernumber: Optional[str] = None,
     customer_id: Optional[int] = None,
     customer_name: Optional[str] = None,
+    customer_vatnumber: Optional[str] = None,
+    customer_phone: Optional[str] = None,
+    customer_fax: Optional[str] = None,
+    customer_email: Optional[str] = None,
+    customer_web: Optional[str] = None,
+    customer_visitaddr1: Optional[str] = None,
+    customer_visitaddr2: Optional[str] = None,
+    customer_visitpostcode: Optional[str] = None,
+    customer_visitcity: Optional[str] = None,
+    customer_visitcountry: Optional[str] = None,
+    customer_invoiceaddr1: Optional[str] = None,
+    customer_invoiceaddr2: Optional[str] = None,
+    customer_invoicepostcode: Optional[str] = None,
+    customer_invoicecity: Optional[str] = None,
+    customer_invoicecountry: Optional[str] = None,
+    customer_deliveraddr1: Optional[str] = None,
+    customer_deliveraddr2: Optional[str] = None,
+    customer_deliverpostcode: Optional[str] = None,
+    customer_delivercity: Optional[str] = None,
+    customer_delivercountry: Optional[str] = None,
+    customer_maincontact: Optional[str] = None,
+    customer_deliveraddr_same_as_invoice: Optional[str] = None,
+    customer_invoiceaddr_same_as_visit: Optional[str] = None,
     customertype_id_ref: Optional[int] = None,
+    customer_site_title: Optional[str] = None,
+    dealer_id: Optional[int] = None,
 ):
     """Update customer details."""
     if (not customernumber and customer_id is None):
         raise HTTPException(status_code=400, detail="Missing parameter: needs customernumber or customer_id")
     updates = []
     params: list = []
-    if customer_name is not None:
-        updates.append("customer_name=?")
-        params.append(customer_name)
-    if customertype_id_ref is not None:
-        updates.append("customertype_id_ref=?")
-        params.append(customertype_id_ref)
+    for column, value in [
+        ("customer_name", customer_name),
+        ("customer_vatnumber", customer_vatnumber),
+        ("customer_phone", customer_phone),
+        ("customer_fax", customer_fax),
+        ("customer_email", customer_email),
+        ("customer_web", customer_web),
+        ("customer_visitaddr1", customer_visitaddr1),
+        ("customer_visitaddr2", customer_visitaddr2),
+        ("customer_visitpostcode", customer_visitpostcode),
+        ("customer_visitcity", customer_visitcity),
+        ("customer_visitcountry", customer_visitcountry),
+        ("customer_invoiceaddr1", customer_invoiceaddr1),
+        ("customer_invoiceaddr2", customer_invoiceaddr2),
+        ("customer_invoicepostcode", customer_invoicepostcode),
+        ("customer_invoicecity", customer_invoicecity),
+        ("customer_invoicecountry", customer_invoicecountry),
+        ("customer_deliveraddr1", customer_deliveraddr1),
+        ("customer_deliveraddr2", customer_deliveraddr2),
+        ("customer_deliverpostcode", customer_deliverpostcode),
+        ("customer_delivercity", customer_delivercity),
+        ("customer_delivercountry", customer_delivercountry),
+        ("customer_maincontact", customer_maincontact),
+        (
+            "customer_deliveraddr_same_as_invoice",
+            customer_deliveraddr_same_as_invoice,
+        ),
+        (
+            "customer_invoiceaddr_same_as_visit",
+            customer_invoiceaddr_same_as_visit,
+        ),
+        ("customertype_id_ref", customertype_id_ref),
+        ("customer_site_title", customer_site_title),
+        ("dealer_id", dealer_id),
+    ]:
+        if value is not None:
+            updates.append(f"{column}=?")
+            params.append(value)
     if not updates:
-        raise HTTPException(status_code=400, detail="Missing parameter: needs at least one: customer_name, customertype_id_ref")
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Missing parameter: needs at least one customer field to update"
+            ),
+        )
     if customernumber:
         where = "customernumber=?"
         params.append(customernumber)
@@ -2165,13 +2299,21 @@ async def v1_sensorunits_list(
     """List sensorunits for a user."""
     query = (
         "SELECT sensoraccess.serialnumber, sensoraccess.changeallowed, sensoraccess.user_id, "
-        "products.product_name, products.productnumber, sensorunits.sensorunit_installdate, "
-        "sensorunits.sensorunit_lastconnect, sensorunits.sensorunit_location, sensorunits.sensorunit_status, "
-        "customer.customernumber, customer.customer_name "
+        "products.product_name, products.product_description, products.productnumber, "
+        "products.product_type, products.product_image_url, sensorunits.sensorunit_installdate, "
+        "sensorunits.sensorunit_lastconnect, sensorunits.sensorunit_location, sensorunits.sensorunit_xpos, "
+        "sensorunits.sensorunit_zpos, sensorunits.sensorunit_status, sensorunits.block, "
+        "customertype.description, customertype.customertype, products.product_id, customertype.customertype_id, "
+        "sensorunits.sensorunit_ypos, sensorunits.sensorunit_note, customer.customernumber, customer.customer_name, "
+        "customer.customer_site_title, customer.customer_id, customer.customer_maincontact, documents.document_url, "
+        "documents.document_name, helpdesks.helpdesk_phone, helpdesks.helpdesk_email "
         "FROM sensoraccess "
         "INNER JOIN sensorunits ON (sensoraccess.serialnumber = sensorunits.serialnumber) "
         "INNER JOIN products ON (sensorunits.product_id_ref = products.product_id) "
-        "INNER JOIN customer ON (sensorunits.customer_id_ref = customer.customer_id)"
+        "INNER JOIN customer ON (sensorunits.customer_id_ref = customer.customer_id) "
+        "INNER JOIN customertype ON (customer.customertype_id_ref = customertype.customertype_id) "
+        "INNER JOIN documents ON (products.document_id_ref=documents.document_id) "
+        "INNER JOIN helpdesks ON (sensorunits.helpdesk_id_ref = helpdesks.helpdesk_id)"
     )
     clauses = []
     params: list = []
