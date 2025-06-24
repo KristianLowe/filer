@@ -1,0 +1,1583 @@
+Log
+
+2025-06-24 10:38:34,392 INFO Application startup complete.
+2025-06-24 10:38:40,255 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2619, in v1_sensorunits_data
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.UndefinedTable: relation "sensordata" does not exist
+LINE 1: ...robenumber, sequencenumber, value, timestamp FROM sensordata...
+                                                             ^
+
+2025-06-24 10:38:40,424 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2854, in v1_user_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,425 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,429 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,435 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,628 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,629 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,643 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,649 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,678 ERROR Feil i /v1/sensorunits/variable/get
+Traceback (most recent call last):
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,679 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,683 ERROR Feil i /v1/sensorunits/variable/get
+Traceback (most recent call last):
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,683 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,692 ERROR Feil i /v1/sensorunits/variable/get
+Traceback (most recent call last):
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,692 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,698 ERROR Feil i /v1/sensorunits/variable/get
+Traceback (most recent call last):
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,698 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,756 ERROR Feil i /v1/sensorunits/variable/get
+Traceback (most recent call last):
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,756 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,762 ERROR Feil i /v1/sensorunits/variable/get
+Traceback (most recent call last):
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:38:40,763 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:39:27,933 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:39:56,469 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:06,562 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:10,426 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:30,444 INFO Shutting down
+2025-06-24 10:40:30,544 INFO Finished server process [3870999]
+2025-06-24 10:40:30,545 ERROR Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 627, in lifespan
+    await receive()
+  File "/usr/lib/python3/dist-packages/uvicorn/lifespan/on.py", line 135, in receive
+    return await self.receive_queue.get()
+  File "/usr/lib/python3.10/asyncio/queues.py", line 159, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+2025-06-24 10:40:34,245 INFO Started server process [3872666]
+2025-06-24 10:40:34,245 INFO Waiting for application startup.
+2025-06-24 10:40:34,245 INFO Application startup complete.
+2025-06-24 10:40:38,547 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2619, in v1_sensorunits_data
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.UndefinedTable: relation "sensordata" does not exist
+LINE 1: ...robenumber, sequencenumber, value, timestamp FROM sensordata...
+                                                             ^
+
+2025-06-24 10:40:38,580 ERROR Feil i /v1/sensorunits/variable/get
+Traceback (most recent call last):
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:38,581 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:38,592 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:38,681 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:38,755 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:38,761 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:38,896 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:38,899 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:38,963 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:38,968 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 460, in v1_messages_list
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:38,989 ERROR Feil i /v1/sensorunits/variable/get
+Traceback (most recent call last):
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:38,989 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:38,995 ERROR Feil i /v1/sensorunits/variable/get
+Traceback (most recent call last):
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:38,998 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:39,004 ERROR Feil i /v1/sensorunits/variable/get
+Traceback (most recent call last):
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:39,005 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:39,014 ERROR Feil i /v1/sensorunits/variable/get
+Traceback (most recent call last):
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-06-24 10:40:39,014 ERROR Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/uvicorn/protocols/http/h11_impl.py", line 373, in run_asgi
+    result = await app(self.scope, self.receive, self.send)
+  File "/usr/lib/python3/dist-packages/uvicorn/middleware/proxy_headers.py", line 75, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/fastapi/applications.py", line 199, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/applications.py", line 119, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 181, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/middleware/errors.py", line 159, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 87, in __call__
+    raise exc
+  File "/usr/lib/python3/dist-packages/starlette/exceptions.py", line 76, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 659, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 259, in handle
+    await self.app(scope, receive, send)
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 61, in app
+    response = await func(request)
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 201, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/lib/python3/dist-packages/fastapi/routing.py", line 148, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/usr/local/bin/portalwebapi.py", line 2500, in v1_sensorunits_variable_get
+    rows = await db.fetchall(query, tuple(params))
+  File "/usr/local/bin/portal_db.py", line 142, in fetchall
+    return await asyncio.to_thread(run)
+  File "/usr/lib/python3.10/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/bin/portal_db.py", line 135, in run
+    cur.execute(self._adapt_query(query), params)
+  File "/usr/lib/python3/dist-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
