@@ -2765,19 +2765,25 @@ async def v1_user_list(
     user_id: Optional[int] = None,
     sortfield: Optional[str] = None,
 ):
-    """List users."""
-    query = (
-        "SELECT user_id,user_name,user_phone_work,user_email,user_password,user_language,user_roletype_id "
-        "FROM users"
+    """List users. Lists all users if no filter is set."""
+    base_query = (
+        "SELECT users.user_id, users.user_name, users.customernumber, users.user_phone_work, users.user_email, "
+        "users.user_password, users.user_language, customer.customer_name, customertype.customertype, "
+        "roletype.roletype_id, roletype.roletype "
+        "FROM users "
+        "INNER JOIN customer ON users.customer_id_ref = customer.customer_id "
+        "INNER JOIN customertype ON customer.customertype_id_ref = customertype.customertype_id "
+        "INNER JOIN roletype ON users.roletype_id_ref = roletype.roletype_id"
     )
-    clauses: list[str] = []
+    clauses = []
     params: list = []
     if user_email:
-        clauses.append("user_email=?")
+        clauses.append("users.user_email=?")
         params.append(user_email)
     if user_id is not None:
-        clauses.append("user_id=?")
+        clauses.append("users.user_id=?")
         params.append(user_id)
+    query = base_query
     if clauses:
         query += " WHERE " + " AND ".join(clauses)
     if sortfield:
@@ -2791,7 +2797,7 @@ async def v1_user_list(
     rows = await db.fetchall(query, tuple(params))
     return {"result": rows}
 
-
+    
 @app.post("/v1/user/variable/add")
 async def v1_user_variable_add(
     user_id: Optional[int] = None,
@@ -2883,4 +2889,3 @@ async def v1_user_variable_get(
         query += " WHERE " + " AND ".join(clauses)
     rows = await db.fetchall(query, tuple(params))
     return {"result": rows}
-
