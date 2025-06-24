@@ -25,6 +25,18 @@ app = FastAPI()
 
 db = PortalDB()
 
+
+@app.on_event("startup")
+async def startup() -> None:
+    """Open the shared database connection pool."""
+    await db.connect()
+
+
+@app.on_event("shutdown")
+async def shutdown() -> None:
+    """Close the shared database connection pool."""
+    await db.close()
+
 @app.delete("/v1/customers/delete")
 async def v1_customers_delete(customernumber: Optional[str] = None, customer_id: Optional[int] = None):
     """Delete a customer by number or id.
@@ -2625,6 +2637,7 @@ async def v1_sensorunits_data(
     sensordb = PortalDB(
         dsn=f"dbi:Pg:dbname={sensor_db_name};host=localhost;port=5432"
     )
+    await sensordb.connect()
     try:
         query = (
             "SELECT probenumber, sequencenumber, value, timestamp "
