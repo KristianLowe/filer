@@ -44,12 +44,19 @@ class PortalDB:
         )
 
     def _adapt_query(self, query: str) -> str:
-        """Convert SQLite placeholders to Postgres style when needed."""
-        # replace '?' placeholders with %s for psycopg2
-        return re.sub(r"\?", "%s", query)
+        """Convert SQLite style '?' placeholders to asyncpg '$n' style."""
+        counter = 0
+
+        def repl(match: re.Match) -> str:
+            nonlocal counter
+            counter += 1
+            return f"${counter}"
+
+        return re.sub(r"\?", repl, query)
 
     async def execute(self, query: str, params: Optional[Union[tuple, list]] = None) -> int:
         params = params or ()
+        query = self._adapt_query(query)
 
         async with self.pool.acquire() as conn:
             try:
@@ -61,6 +68,7 @@ class PortalDB:
 
     async def fetchone(self, query: str, params: Optional[Union[tuple, list]] = None):
         params = params or ()
+        query = self._adapt_query(query)
         async with self.pool.acquire() as conn:
             try:
                 row = await conn.fetchrow(query, *params)
@@ -72,6 +80,7 @@ class PortalDB:
     async def fetchall(self, query: str, params: Optional[Union[tuple, list]] = None):
         """Return a list of rows as dictionaries."""
         params = params or ()
+        query = self._adapt_query(query)
         async with self.pool.acquire() as conn:
             try:
                 rows = await conn.fetch(query, *params)
