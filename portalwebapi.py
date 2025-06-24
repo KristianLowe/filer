@@ -4,11 +4,16 @@ import tempfile
 import time
 import sqlite3
 import logging
+import json
+import smtplib
+from email.message import EmailMessage
 from typing import Optional
 from email.message import EmailMessage
 import smtplib
 import httpx
 import asyncio
+
+import httpx
 
 logging.basicConfig(
     filename='/var/log/7sense/portalwebapi_py.log',
@@ -1017,25 +1022,27 @@ async def v1_event_add(
             detail="Missing parameter, needs serialnumber and event with option username/userid",
         )
 
-    # Send a plain notification mail.  The recipient address is hard coded
-    # exactly as in the original Perl implementation.
-    subject = f"eventnumber={event}"
-    body = f"eventnumber={event}"
-    await send_email("kjell@sundby.com", subject, body)
+    await send_email("kjell@sundby.com", f"eventnumber={event}", f"eventnumber={event}")
 
     return {"message": "OK"}
 
 
 @app.post("/v1/sendsms")
 async def v1_sendsms(mobilnumber: Optional[str] = None, text: Optional[str] = None):
-    """Send an SMS message using the same gateway as the Perl version."""
+
+    """Send an SMS message via Link Mobility."""
     if not mobilnumber or not text:
         raise HTTPException(status_code=400, detail="Missing parameter, needs mobilnumber and text")
-
-    # Normalise the phone number by removing spaces and dashes
     phone = mobilnumber.replace(" ", "").replace("-", "")
-
-    await send_sms(phone, text)
+    reply = await send_sms_with_linkmobility(phone, text)
+    if not reply:
+        raise HTTPException(status_code=400, detail=f"Error sending SMS: to:{mobilnumber}:text:{text}, reply:{reply}")
+    try:
+        data = json.loads(reply)
+        if data.get("resultCode") != "1005":
+            logging.error("Error sending SMS: to:%s:text:%s, reply:%s", mobilnumber, text, reply)
+    except Exception:
+        logging.exception("Error parsing SMS reply")
 
     return {"result": "OK"}
 
@@ -1050,7 +1057,9 @@ async def v1_sendmessage(
     smsmessage: Optional[str] = None,
     pushmessage: Optional[str] = None,
 ):
-    """Send a message to one or more users."""
+
+    """Send a message to one or more users similar to the Perl implementation."""
+
     if not serialnumber and sensorunit_id is None and user_id is None:
         raise HTTPException(
             status_code=400,
@@ -1060,9 +1069,10 @@ async def v1_sendmessage(
             ),
         )
 
-    dataset: list[dict] = []
+    recipients: list[dict] = []
     if user_id is not None:
-        dataset.append({"users_id_ref": user_id, "email": 1, "sms": 1, "push_notification": 1})
+        recipients.append({"id": user_id, "email": True, "sms": True, "push": True})
+
     else:
         if sensorunit_id is None and serialnumber:
             row = await db.fetchone(
@@ -1077,45 +1087,39 @@ async def v1_sendmessage(
                 "SELECT users_id_ref,sms,email,push_notification FROM message_receivers where sensorunits_id_ref=?",
                 (sensorunit_id,),
             )
-            dataset = [dict(r) for r in rows]
 
-    messages_sent = 0
-    for user in dataset:
-        uid = user["users_id_ref"]
-        user_row = await db.fetchone(
-            "SELECT user_email,user_phone_work FROM users where user_id=?",
+            recipients = [
+                {"id": r["users_id_ref"], "sms": r["sms"], "email": r["email"], "push": r["push_notification"]}
+                for r in rows
+            ]
+
+    count = 0
+    for rec in recipients:
+        uid = rec["id"]
+        info = await db.fetchone(
+            "SELECT user_email,user_phone_work FROM users WHERE user_id=?",
             (uid,),
         )
-        if user_row is None:
-            logging.warning(f"sendmessage: user id {uid} is missing")
+        if info is None:
             continue
-
-        user_email = (user_row["user_email"] or "").strip()
-        user_phone = (user_row["user_phone_work"] or "").replace(" ", "").replace("-", "")
-
-        if user.get("email") and user_email and mailmessage:
-            msg = mailmessage.replace("<br>", "\n") + "\n\nBest regards,\n7Sense Support"
-            await send_email(user_email, mailsubject, msg)
-            messages_sent += 1
-
-        if user.get("sms") and user_phone and smsmessage:
+        if rec.get("email") and mailmessage and info["user_email"]:
+            text = mailmessage.replace("<br>", "\n") + "\n\nBest regards,\n7Sense Support"
+            await send_email(info["user_email"], mailsubject or "Message from 7sense", text)
+        if rec.get("sms") and smsmessage and info["user_phone_work"]:
+            phone = info["user_phone_work"].replace(" ", "").replace("-", "")
             sms_text = smsmessage.replace("\n", " ") + " Best regards, 7Sense Support"
-            await send_sms(user_phone, sms_text)
-            messages_sent += 1
+            await send_sms_with_linkmobility(phone, sms_text)
+        if rec.get("push") and pushmessage:
+            token = await get_user_variable(uid, "pushtoken") or ""
+            if token:
+                badge = int((await get_user_variable(uid, "pushbadge") or 0)) + 1
+                sound = await get_user_variable(uid, "pushsound") or "notification.wav"
+                await send_push_notification(token, mailsubject, pushmessage.replace("\n", " "), sound, badge)
+                await update_user_variable(uid, "pushbadge", str(badge))
+        count += 1
 
-        if user.get("push_notification") and pushmessage:
-            badge = await get_user_variable(uid, "pushbadge") or 0
-            pushsound = await get_user_variable(uid, "pushsound") or "notification.wav"
-            pushtoken = await get_user_variable(uid, "pushtoken") or ""
-            if not pushtoken:
-                logging.info(f"sendmessage: Token missing for userid: {uid}")
-                continue
-            badge = int(badge) + 1
-            await send_push(pushtoken, pushmessage, badge, pushsound)
-            await update_user_variable(uid, "pushbadge", str(badge))
-            messages_sent += 1
+    return {"result": "OK", "messages": count}
 
-    return {"result": "OK", "messages": messages_sent}
 
 
 @app.post("/v1/pushmessage")
@@ -1152,20 +1156,18 @@ async def v1_pushmessage(
             )
             recipients = [r["users_id_ref"] for r in rows]
 
-    messages_sent = 0
+    count = 0
     for uid in recipients:
-        pushtoken = await get_user_variable(uid, "pushtoken") or ""
-        if not pushtoken:
-            logging.info(f"pushmessage: Token missing for userid: {uid}")
+        token = await get_user_variable(uid, "pushtoken") or ""
+        if not token:
             continue
-        badge = await get_user_variable(uid, "pushbadge") or 0
-        badge = int(badge) + 1
-        pushsound = await get_user_variable(uid, "pushsound") or "notification.wav"
-        await send_push(pushtoken, message, badge, pushsound)
+        badge = int((await get_user_variable(uid, "pushbadge") or 0)) + 1
+        sound = await get_user_variable(uid, "pushsound") or "notification.wav"
+        await send_push_notification(token, subject, message.replace("\n", " "), sound, badge)
         await update_user_variable(uid, "pushbadge", str(badge))
-        messages_sent += 1
+        count += 1
+    return {"result": "OK", "messages": count}
 
-    return {"result": "OK", "messages": messages_sent}
 
 
 async def dbget_variable(serialnumber: str, variable: str):
@@ -1188,7 +1190,8 @@ async def dbupdate_variable(serialnumber: str, variable: str, value: str) -> Non
         )
 
 
-async def get_user_variable(user_id: int, variable: str):
+async def get_user_variable(user_id: int, variable: str) -> Optional[str]:
+
     row = await db.fetchone(
         "SELECT value FROM user_variables WHERE user_id=? AND variable=?",
         (user_id, variable),
@@ -1215,13 +1218,15 @@ async def send_email(to_addr: str, subject: str, body: str) -> None:
     msg["Subject"] = subject
     msg.set_content(body)
     try:
-        await asyncio.to_thread(smtplib.SMTP("localhost").send_message, msg)
-        logging.info(f"sendmessage: Mail sent to {to_addr} with subject {subject}")
-    except Exception as exc:
-        logging.error(f"sendmessage: Error sending mail to {to_addr}: {exc}")
+
+        with smtplib.SMTP("localhost") as smtp:
+            smtp.send_message(msg)
+    except Exception:
+        logging.exception("Error sending email")
 
 
-async def send_sms(phone: str, text: str) -> None:
+async def send_sms_with_linkmobility(phone: str, text: str) -> str:
+
     payload = {
         "source": "7sense",
         "destination": phone,
@@ -1232,48 +1237,44 @@ async def send_sms(phone: str, text: str) -> None:
         "useDeliveryReport": True,
         "refId": phone,
     }
-    headers = {
-        "Authorization": "Basic V3N6aDVmdlQ6TUMyaGc4Nm4=",
-        "Content-Type": "application/json",
-        "charset": "utf-8",
-        "User-Agent": "curl/7.26.0",
-    }
+
     try:
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                "https://wsx.sp247.net/sms/send", json=payload, headers=headers
+        async with httpx.AsyncClient(timeout=10) as client:
+            resp = await client.post(
+                "https://wsx.sp247.net/sms/send",
+                json=payload,
+                headers={
+                    "Authorization": "Basic V3N6aDVmdlQ6TUMyaGc4Nm4=",
+                    "charset": "utf-8",
+                    "User-Agent": "portalwebapi",
+                },
             )
-        logging.info(f"sendmessage: SMS reply: {response.text}")
-        data = response.json()
-        if data.get("resultCode") != "1005":
-            logging.warning(
-                f"sendmessage: Error sending SMS: to:{phone}:text:{text}, reply:{response.text}"
-            )
-    except Exception as exc:
-        logging.error(
-            f"sendmessage: Error sending SMS: to:{phone}:text:{text}, error:{exc}"
-        )
+            resp.raise_for_status()
+            return resp.text
+    except Exception:
+        logging.exception("Error sending SMS")
+        return ""
 
 
-async def send_push(token: str, message: str, badge: int, sound: str) -> None:
-    payload = {
+async def send_push_notification(token: str, subject: str, message: str, sound: str, badge: int) -> str:
+    data = {
         "to": token,
-        "title": "Message from 7Sense",
-        "body": message.replace("\n", " "),
+        "title": subject,
+        "body": message,
+
         "channelId": "default",
         "sound": sound,
         "badge": badge,
     }
     try:
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                "https://exp.host/--/api/v2/push/send", json=payload
-            )
-        logging.debug(
-            f"sendmessage: Push response from exp API: {response.text}"
-        )
-    except Exception as exc:
-        logging.error(f"sendmessage: Push error for token {token}: {exc}")
+        async with httpx.AsyncClient(timeout=10) as client:
+            resp = await client.post("https://exp.host/--/api/v2/push/send", json=data)
+            resp.raise_for_status()
+            return resp.text
+    except Exception:
+        logging.exception("Error sending push notification")
+        return ""
+
 
 
 @app.patch("/v1/sensorunit/ports/output/on")
@@ -1291,8 +1292,10 @@ async def v1_sensorunit_ports_output_on(serialnumber: Optional[str] = None, port
         new_status = f"3,{updated},{parts[2]},{parts[3]}"
     else:
         new_status = f"{parts[0]},{parts[1]},3,{updated}"
+    reply = await send_sms_with_linkmobility(phone, f"Start {port}")
     await dbupdate_variable(serialnumber, "remotecontroller_status", new_status)
-    return {"result": "OK"}
+    await dbupdate_variable(serialnumber, "remotecontroller_reply", reply or "")
+    return {"result": reply}
 
 
 @app.patch("/v1/sensorunit/ports/output/off")
@@ -1310,8 +1313,10 @@ async def v1_sensorunit_ports_output_off(serialnumber: Optional[str] = None, por
         new_status = f"4,{updated},{parts[2]},{parts[3]}"
     else:
         new_status = f"{parts[0]},{parts[1]},4,{updated}"
+    reply = await send_sms_with_linkmobility(phone, f"Stop {port}")
     await dbupdate_variable(serialnumber, "remotecontroller_status", new_status)
-    return {"result": "OK"}
+    await dbupdate_variable(serialnumber, "remotecontroller_reply", reply or "")
+    return {"result": reply}
 
 
 @app.get("/v1/sensorunit/ports/output/status")
