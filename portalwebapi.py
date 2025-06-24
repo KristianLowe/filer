@@ -5,6 +5,10 @@ import time
 import sqlite3
 import logging
 from typing import Optional
+from email.message import EmailMessage
+import smtplib
+import httpx
+import asyncio
 
 logging.basicConfig(
     filename='/var/log/7sense/portalwebapi_py.log',
@@ -1001,20 +1005,38 @@ async def v1_event_add(
     username: Optional[str] = "",
     userid: Optional[str] = "",
 ):
-    """Register an event for a serialnumber."""
+    """Register an event for a serialnumber.
+
+    The Perl version only sent a very simple email notification. This
+    implementation mirrors that behaviour so that external systems can
+    react to the event in the same way as before.
+    """
     if not serialnumber or not event:
         raise HTTPException(
             status_code=400,
             detail="Missing parameter, needs serialnumber and event with option username/userid",
         )
+
+    # Send a plain notification mail.  The recipient address is hard coded
+    # exactly as in the original Perl implementation.
+    subject = f"eventnumber={event}"
+    body = f"eventnumber={event}"
+    await send_email("kjell@sundby.com", subject, body)
+
     return {"message": "OK"}
 
 
 @app.post("/v1/sendsms")
 async def v1_sendsms(mobilnumber: Optional[str] = None, text: Optional[str] = None):
-    """Send an SMS message (stubbed)."""
+    """Send an SMS message using the same gateway as the Perl version."""
     if not mobilnumber or not text:
         raise HTTPException(status_code=400, detail="Missing parameter, needs mobilnumber and text")
+
+    # Normalise the phone number by removing spaces and dashes
+    phone = mobilnumber.replace(" ", "").replace("-", "")
+
+    await send_sms(phone, text)
+
     return {"result": "OK"}
 
 
@@ -1028,7 +1050,7 @@ async def v1_sendmessage(
     smsmessage: Optional[str] = None,
     pushmessage: Optional[str] = None,
 ):
-    """Send a message to one or more users (simplified)."""
+    """Send a message to one or more users."""
     if not serialnumber and sensorunit_id is None and user_id is None:
         raise HTTPException(
             status_code=400,
@@ -1037,9 +1059,10 @@ async def v1_sendmessage(
                 "Option mailmessage, mailsubject, smsmessage, pushmessage"
             ),
         )
-    recipients: list[int] = []
+
+    dataset: list[dict] = []
     if user_id is not None:
-        recipients.append(user_id)
+        dataset.append({"users_id_ref": user_id, "email": 1, "sms": 1, "push_notification": 1})
     else:
         if sensorunit_id is None and serialnumber:
             row = await db.fetchone(
@@ -1051,11 +1074,48 @@ async def v1_sendmessage(
             sensorunit_id = row["sensorunit_id"]
         if sensorunit_id is not None:
             rows = await db.fetchall(
-                "SELECT users_id_ref FROM message_receivers where sensorunits_id_ref=?",
+                "SELECT users_id_ref,sms,email,push_notification FROM message_receivers where sensorunits_id_ref=?",
                 (sensorunit_id,),
             )
-            recipients = [r["users_id_ref"] for r in rows]
-    return {"result": "OK", "messages": len(recipients)}
+            dataset = [dict(r) for r in rows]
+
+    messages_sent = 0
+    for user in dataset:
+        uid = user["users_id_ref"]
+        user_row = await db.fetchone(
+            "SELECT user_email,user_phone_work FROM users where user_id=?",
+            (uid,),
+        )
+        if user_row is None:
+            logging.warning(f"sendmessage: user id {uid} is missing")
+            continue
+
+        user_email = (user_row["user_email"] or "").strip()
+        user_phone = (user_row["user_phone_work"] or "").replace(" ", "").replace("-", "")
+
+        if user.get("email") and user_email and mailmessage:
+            msg = mailmessage.replace("<br>", "\n") + "\n\nBest regards,\n7Sense Support"
+            await send_email(user_email, mailsubject, msg)
+            messages_sent += 1
+
+        if user.get("sms") and user_phone and smsmessage:
+            sms_text = smsmessage.replace("\n", " ") + " Best regards, 7Sense Support"
+            await send_sms(user_phone, sms_text)
+            messages_sent += 1
+
+        if user.get("push_notification") and pushmessage:
+            badge = await get_user_variable(uid, "pushbadge") or 0
+            pushsound = await get_user_variable(uid, "pushsound") or "notification.wav"
+            pushtoken = await get_user_variable(uid, "pushtoken") or ""
+            if not pushtoken:
+                logging.info(f"sendmessage: Token missing for userid: {uid}")
+                continue
+            badge = int(badge) + 1
+            await send_push(pushtoken, pushmessage, badge, pushsound)
+            await update_user_variable(uid, "pushbadge", str(badge))
+            messages_sent += 1
+
+    return {"result": "OK", "messages": messages_sent}
 
 
 @app.post("/v1/pushmessage")
@@ -1066,12 +1126,13 @@ async def v1_pushmessage(
     message: Optional[str] = None,
     subject: Optional[str] = "Message from 7sense",
 ):
-    """Send a push notification (simplified)."""
+    """Send a push notification to one or more users."""
     if (not serialnumber and sensorunit_id is None and user_id is None) or message is None:
         raise HTTPException(
             status_code=400,
             detail="Missing parameter, needs message and (serialnumber or sensorunit_id or user_id) with option subject",
         )
+
     recipients: list[int] = []
     if user_id is not None:
         recipients.append(user_id)
@@ -1090,7 +1151,21 @@ async def v1_pushmessage(
                 (sensorunit_id,),
             )
             recipients = [r["users_id_ref"] for r in rows]
-    return {"result": "OK", "messages": len(recipients)}
+
+    messages_sent = 0
+    for uid in recipients:
+        pushtoken = await get_user_variable(uid, "pushtoken") or ""
+        if not pushtoken:
+            logging.info(f"pushmessage: Token missing for userid: {uid}")
+            continue
+        badge = await get_user_variable(uid, "pushbadge") or 0
+        badge = int(badge) + 1
+        pushsound = await get_user_variable(uid, "pushsound") or "notification.wav"
+        await send_push(pushtoken, message, badge, pushsound)
+        await update_user_variable(uid, "pushbadge", str(badge))
+        messages_sent += 1
+
+    return {"result": "OK", "messages": messages_sent}
 
 
 async def dbget_variable(serialnumber: str, variable: str):
@@ -1111,6 +1186,94 @@ async def dbupdate_variable(serialnumber: str, variable: str, value: str) -> Non
             "INSERT INTO sensorunit_variables (serialnumber, variable, value) VALUES (?, ?, ?)",
             (serialnumber, variable, value),
         )
+
+
+async def get_user_variable(user_id: int, variable: str):
+    row = await db.fetchone(
+        "SELECT value FROM user_variables WHERE user_id=? AND variable=?",
+        (user_id, variable),
+    )
+    return row["value"] if row else None
+
+
+async def update_user_variable(user_id: int, variable: str, value: str) -> None:
+    count = await db.execute(
+        "UPDATE user_variables SET value=? WHERE user_id=? AND variable=?",
+        (value, user_id, variable),
+    )
+    if count == 0:
+        await db.execute(
+            "INSERT INTO user_variables (user_id, variable, value) VALUES (?, ?, ?)",
+            (user_id, variable, value),
+        )
+
+
+async def send_email(to_addr: str, subject: str, body: str) -> None:
+    msg = EmailMessage()
+    msg["From"] = "no-reply@7sense.no"
+    msg["To"] = to_addr
+    msg["Subject"] = subject
+    msg.set_content(body)
+    try:
+        await asyncio.to_thread(smtplib.SMTP("localhost").send_message, msg)
+        logging.info(f"sendmessage: Mail sent to {to_addr} with subject {subject}")
+    except Exception as exc:
+        logging.error(f"sendmessage: Error sending mail to {to_addr}: {exc}")
+
+
+async def send_sms(phone: str, text: str) -> None:
+    payload = {
+        "source": "7sense",
+        "destination": phone,
+        "userData": text,
+        "platformId": "COMMON_API",
+        "platformPartnerId": "12979",
+        "deliveryReportGates": ["uWkvChSX"],
+        "useDeliveryReport": True,
+        "refId": phone,
+    }
+    headers = {
+        "Authorization": "Basic V3N6aDVmdlQ6TUMyaGc4Nm4=",
+        "Content-Type": "application/json",
+        "charset": "utf-8",
+        "User-Agent": "curl/7.26.0",
+    }
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "https://wsx.sp247.net/sms/send", json=payload, headers=headers
+            )
+        logging.info(f"sendmessage: SMS reply: {response.text}")
+        data = response.json()
+        if data.get("resultCode") != "1005":
+            logging.warning(
+                f"sendmessage: Error sending SMS: to:{phone}:text:{text}, reply:{response.text}"
+            )
+    except Exception as exc:
+        logging.error(
+            f"sendmessage: Error sending SMS: to:{phone}:text:{text}, error:{exc}"
+        )
+
+
+async def send_push(token: str, message: str, badge: int, sound: str) -> None:
+    payload = {
+        "to": token,
+        "title": "Message from 7Sense",
+        "body": message.replace("\n", " "),
+        "channelId": "default",
+        "sound": sound,
+        "badge": badge,
+    }
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "https://exp.host/--/api/v2/push/send", json=payload
+            )
+        logging.debug(
+            f"sendmessage: Push response from exp API: {response.text}"
+        )
+    except Exception as exc:
+        logging.error(f"sendmessage: Push error for token {token}: {exc}")
 
 
 @app.patch("/v1/sensorunit/ports/output/on")
