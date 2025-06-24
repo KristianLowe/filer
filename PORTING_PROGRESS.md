@@ -90,3 +90,4 @@ implementation. Each endpoint is marked ✅ if it has a matching counterpart in
 | GET | /v1/user/variable/get | ✅ |
 | PATCH | /v1/user/variable/update | ✅ |
 | GET | /v1/variabletypes/list | ✅ |
+
