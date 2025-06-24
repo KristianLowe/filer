@@ -8,6 +8,10 @@ import json
 import smtplib
 from email.message import EmailMessage
 from typing import Optional
+from email.message import EmailMessage
+import smtplib
+import httpx
+import asyncio
 
 import httpx
 
@@ -1006,18 +1010,26 @@ async def v1_event_add(
     username: Optional[str] = "",
     userid: Optional[str] = "",
 ):
-    """Register an event for a serialnumber."""
+    """Register an event for a serialnumber.
+
+    The Perl version only sent a very simple email notification. This
+    implementation mirrors that behaviour so that external systems can
+    react to the event in the same way as before.
+    """
     if not serialnumber or not event:
         raise HTTPException(
             status_code=400,
             detail="Missing parameter, needs serialnumber and event with option username/userid",
         )
+
     await send_email("kjell@sundby.com", f"eventnumber={event}", f"eventnumber={event}")
+
     return {"message": "OK"}
 
 
 @app.post("/v1/sendsms")
 async def v1_sendsms(mobilnumber: Optional[str] = None, text: Optional[str] = None):
+
     """Send an SMS message via Link Mobility."""
     if not mobilnumber or not text:
         raise HTTPException(status_code=400, detail="Missing parameter, needs mobilnumber and text")
@@ -1031,6 +1043,7 @@ async def v1_sendsms(mobilnumber: Optional[str] = None, text: Optional[str] = No
             logging.error("Error sending SMS: to:%s:text:%s, reply:%s", mobilnumber, text, reply)
     except Exception:
         logging.exception("Error parsing SMS reply")
+
     return {"result": "OK"}
 
 
@@ -1044,7 +1057,9 @@ async def v1_sendmessage(
     smsmessage: Optional[str] = None,
     pushmessage: Optional[str] = None,
 ):
+
     """Send a message to one or more users similar to the Perl implementation."""
+
     if not serialnumber and sensorunit_id is None and user_id is None:
         raise HTTPException(
             status_code=400,
@@ -1053,9 +1068,11 @@ async def v1_sendmessage(
                 "Option mailmessage, mailsubject, smsmessage, pushmessage"
             ),
         )
+
     recipients: list[dict] = []
     if user_id is not None:
         recipients.append({"id": user_id, "email": True, "sms": True, "push": True})
+
     else:
         if sensorunit_id is None and serialnumber:
             row = await db.fetchone(
@@ -1070,6 +1087,7 @@ async def v1_sendmessage(
                 "SELECT users_id_ref,sms,email,push_notification FROM message_receivers where sensorunits_id_ref=?",
                 (sensorunit_id,),
             )
+
             recipients = [
                 {"id": r["users_id_ref"], "sms": r["sms"], "email": r["email"], "push": r["push_notification"]}
                 for r in rows
@@ -1103,6 +1121,7 @@ async def v1_sendmessage(
     return {"result": "OK", "messages": count}
 
 
+
 @app.post("/v1/pushmessage")
 async def v1_pushmessage(
     serialnumber: Optional[str] = None,
@@ -1117,6 +1136,7 @@ async def v1_pushmessage(
             status_code=400,
             detail="Missing parameter, needs message and (serialnumber or sensorunit_id or user_id) with option subject",
         )
+
     recipients: list[int] = []
     if user_id is not None:
         recipients.append(user_id)
@@ -1135,6 +1155,7 @@ async def v1_pushmessage(
                 (sensorunit_id,),
             )
             recipients = [r["users_id_ref"] for r in rows]
+
     count = 0
     for uid in recipients:
         token = await get_user_variable(uid, "pushtoken") or ""
@@ -1146,6 +1167,7 @@ async def v1_pushmessage(
         await update_user_variable(uid, "pushbadge", str(badge))
         count += 1
     return {"result": "OK", "messages": count}
+
 
 
 async def dbget_variable(serialnumber: str, variable: str):
@@ -1169,6 +1191,7 @@ async def dbupdate_variable(serialnumber: str, variable: str, value: str) -> Non
 
 
 async def get_user_variable(user_id: int, variable: str) -> Optional[str]:
+
     row = await db.fetchone(
         "SELECT value FROM user_variables WHERE user_id=? AND variable=?",
         (user_id, variable),
@@ -1195,6 +1218,7 @@ async def send_email(to_addr: str, subject: str, body: str) -> None:
     msg["Subject"] = subject
     msg.set_content(body)
     try:
+
         with smtplib.SMTP("localhost") as smtp:
             smtp.send_message(msg)
     except Exception:
@@ -1202,6 +1226,7 @@ async def send_email(to_addr: str, subject: str, body: str) -> None:
 
 
 async def send_sms_with_linkmobility(phone: str, text: str) -> str:
+
     payload = {
         "source": "7sense",
         "destination": phone,
@@ -1212,6 +1237,7 @@ async def send_sms_with_linkmobility(phone: str, text: str) -> str:
         "useDeliveryReport": True,
         "refId": phone,
     }
+
     try:
         async with httpx.AsyncClient(timeout=10) as client:
             resp = await client.post(
@@ -1235,6 +1261,7 @@ async def send_push_notification(token: str, subject: str, message: str, sound: 
         "to": token,
         "title": subject,
         "body": message,
+
         "channelId": "default",
         "sound": sound,
         "badge": badge,
@@ -1247,6 +1274,7 @@ async def send_push_notification(token: str, subject: str, message: str, sound: 
     except Exception:
         logging.exception("Error sending push notification")
         return ""
+
 
 
 @app.patch("/v1/sensorunit/ports/output/on")
