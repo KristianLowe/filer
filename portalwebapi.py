@@ -2597,26 +2597,56 @@ async def v1_sensorunits_data(
     probenumber: Optional[int] = None,
     sortfield: Optional[str] = None,
 ):
-    """List sensordata entries for a sensor unit."""
+    """List sensordata entries for a sensor unit.
+
+    The sensordata for each customer is stored in its own database.  To
+    fetch the data we first look up the correct database for the provided
+    ``serialnumber`` from the ``sensorunits`` table in the main database.
+    The query is then executed against that customer specific sensordata
+    database.
+    """
     if not serialnumber:
-        raise HTTPException(status_code=400, detail="Missing parameter: needs serialnumber")
-    query = (
-        "SELECT probenumber, sequencenumber, value, timestamp "
-        "FROM sensordata WHERE serialnumber=?"
+        raise HTTPException(
+            status_code=400, detail="Missing parameter: needs serialnumber"
+        )
+
+    # Look up the sensor specific database name from the main database
+    row = await db.fetchone(
+        "SELECT dbname FROM sensorunits WHERE serialnumber=?", (serialnumber,)
     )
-    params: list = [serialnumber]
-    if probenumber is not None:
-        query += " AND probenumber=?"
-        params.append(probenumber)
-    if sortfield:
-        query += f" ORDER BY {sortfield}"
-    if limit is not None:
-        query += " LIMIT ?"
-        params.append(limit)
-    if offset is not None:
-        query += " OFFSET ?"
-        params.append(offset)
-    rows = await db.fetchall(query, tuple(params))
+    if row is None or not row.get("dbname"):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Did not find customer DB for serialnumber:{serialnumber}",
+        )
+    sensor_db_name = row["dbname"].strip()
+
+    # Connect to the customer specific database and run the query there
+    sensordb = PortalDB(
+        dsn=f"dbi:Pg:dbname={sensor_db_name};host=localhost;port=5432"
+    )
+    try:
+        query = (
+            "SELECT probenumber, sequencenumber, value, timestamp "
+            "FROM sensordata WHERE serialnumber=?"
+        )
+        params: list = [serialnumber]
+        if probenumber is not None:
+            query += " AND probenumber=?"
+            params.append(probenumber)
+        if sortfield:
+            query += f" ORDER BY {sortfield}"
+        if limit is not None:
+            query += " LIMIT ?"
+            params.append(limit)
+        if offset is not None:
+            query += " OFFSET ?"
+            params.append(offset)
+
+        rows = await sensordb.fetchall(query, tuple(params))
+    finally:
+        await sensordb.close()
+
     return {"result": rows}
 
 
