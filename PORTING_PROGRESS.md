@@ -91,3 +91,7 @@ implementation. Each endpoint is marked ✅ if it has a matching counterpart in
 | PATCH | /v1/user/variable/update | ✅ |
 | GET | /v1/variabletypes/list | ✅ |
 
+
+## Notes
+- Queries now support asyncpg via automatic placeholder conversion from `?` to `$n` in `portal_db.py`.
+- The API now opens the database connection pool on FastAPI startup and closes it on shutdown.
