@@ -1907,7 +1907,8 @@ async def v1_sensorprobes_list(
     """List sensor probes."""
     query = (
         "SELECT products.productnumber, product_id_ref, sensorprobes.hidden, sensorprobes_number, sensorprobes_alert_hidden, "
-        "unittypes.unittype_id, unittypes.unittype_description, unittypes.unittype_shortlabel, unittypes.unittype_label, unittypes.unittype_decimals "
+        "unittypes.unittype_id, unittypes.unittype_description, unittypes.unittype_shortlabel, unittypes.unittype_url, "
+        "unittypes.unittype_label, unittypes.unittype_decimals "
         "FROM sensorprobes INNER JOIN unittypes ON sensorprobes.unittype_id_ref = unittypes.unittype_id "
         "INNER JOIN products ON product_id_ref = product_id"
     )
